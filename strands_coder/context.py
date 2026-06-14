@@ -218,18 +218,24 @@ def fetch_github_event_context() -> str:
             if "errors" in data:
                 print(f"⚠ GraphQL errors: {data['errors']}")
             else:
-                issue_data = data.get("data", {}).get("repository", {}).get("issue", {})
+                # GraphQL returns null (not {}) for absent nodes - e.g. when the
+                # number refers to a PR (issue: null) or the repo/data is null on a
+                # partial error. Chained .get(k, {}) does NOT guard against a present
+                # key with a null value, so coalesce every nullable node with `or {}`.
+                issue_data = (
+                    ((data.get("data") or {}).get("repository") or {}).get("issue") or {}
+                )
 
                 # Comments
-                comments = issue_data.get("comments", {}).get("nodes", [])
-                total_comments = issue_data.get("comments", {}).get("totalCount", 0)
+                comments = (issue_data.get("comments") or {}).get("nodes") or []
+                total_comments = (issue_data.get("comments") or {}).get("totalCount", 0)
 
                 if comments:
                     context_parts.append(
                         f"\n### 💬 Comments ({total_comments} total)\n"
                     )
                     for idx, comment in enumerate(comments, 1):
-                        author = comment.get("author", {}).get("login", "unknown")
+                        author = (comment.get("author") or {}).get("login", "unknown")
                         body = comment.get("body", "")
                         created = comment.get("createdAt", "")
                         context_parts.append(f"""
@@ -240,10 +246,10 @@ def fetch_github_event_context() -> str:
 """)
 
                 # Linked PRs/Issues
-                timeline = issue_data.get("timelineItems", {}).get("nodes", [])
+                timeline = (issue_data.get("timelineItems") or {}).get("nodes") or []
                 linked_items = []
                 for item in timeline:
-                    source = item.get("source", {})
+                    source = item.get("source") or {}
                     if source:
                         num = source.get("number")
                         title = source.get("title")
@@ -367,11 +373,11 @@ def fetch_github_event_context() -> str:
                 print(f"⚠ GraphQL errors: {data['errors']}")
             else:
                 pr_data = (
-                    data.get("data", {}).get("repository", {}).get("pullRequest", {})
+                    ((data.get("data") or {}).get("repository") or {}).get("pullRequest") or {}
                 )
 
                 # Reviews
-                reviews = pr_data.get("reviews", {}).get("nodes", [])
+                reviews = (pr_data.get("reviews") or {}).get("nodes") or []
                 total_reviews = pr_data.get("reviews", {}).get("totalCount", 0)
 
                 if reviews:
@@ -397,7 +403,7 @@ def fetch_github_event_context() -> str:
                         f"\n### 💬 Comments ({total_comments} total)\n"
                     )
                     for idx, comment in enumerate(comments, 1):
-                        author = comment.get("author", {}).get("login", "unknown")
+                        author = (comment.get("author") or {}).get("login", "unknown")
                         body = comment.get("body", "")
                         created = comment.get("createdAt", "")
                         context_parts.append(f"""
@@ -526,15 +532,15 @@ def fetch_github_event_context() -> str:
                 print(f"⚠ GraphQL errors: {data['errors']}")
             else:
                 disc_data = (
-                    data.get("data", {}).get("repository", {}).get("discussion", {})
+                    ((data.get("data") or {}).get("repository") or {}).get("discussion") or {}
                 )
-                comments = disc_data.get("comments", {}).get("nodes", [])
-                total_comments = disc_data.get("comments", {}).get("totalCount", 0)
+                comments = (disc_data.get("comments") or {}).get("nodes") or []
+                total_comments = (disc_data.get("comments") or {}).get("totalCount", 0)
 
                 if comments:
                     context_parts.append(f"\n### 💬 Replies ({total_comments} total)\n")
                     for idx, comment in enumerate(comments, 1):
-                        author = comment.get("author", {}).get("login", "unknown")
+                        author = (comment.get("author") or {}).get("login", "unknown")
                         body = comment.get("body", "")
                         created = comment.get("createdAt", "")
                         context_parts.append(f"""
