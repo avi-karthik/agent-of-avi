@@ -34,7 +34,7 @@ on:
         type: string
       model:
         description: 'Model ID'
-        default: "global.anthropic.claude-opus-4-5-20251101-v1:0"
+        default: "us.anthropic.claude-opus-4-8"
         required: false
         type: string
       max_tokens:
@@ -146,7 +146,7 @@ jobs:
 
           # Model configuration
           provider: ${{ github.event.inputs.provider || vars.STRANDS_PROVIDER || 'bedrock' }}
-          model: ${{ github.event.inputs.model || vars.STRANDS_MODEL_ID || 'global.anthropic.claude-opus-4-5-20251101-v1:0' }}
+          model: ${{ github.event.inputs.model || vars.STRANDS_MODEL_ID || 'us.anthropic.claude-opus-4-8' }}
           max_tokens: ${{ vars.STRANDS_MAX_TOKENS || '60000' }}
 
           # System prompt configuration
