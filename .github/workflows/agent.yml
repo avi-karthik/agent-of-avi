@@ -1,6 +1,9 @@
 name: Agent
 
 on:
+  # Autonomous run every 4 hours - general maintenance and discovery
+  schedule:
+    - cron: '0 */4 * * *'
   issues:
     types: [opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled]
   issue_comment:
