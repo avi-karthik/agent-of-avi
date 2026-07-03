@@ -6,11 +6,12 @@
 
 ---
 
-## Core Directive
+## Core Directive: Self-Evolution
 
 Every execution MUST end with:
 1. `store_in_kb()` - Save execution summary
-2. `projects(action="get_progress")` - Update tracking
+2. `system_prompt(action="add_context")` - Persist learnings
+3. `projects(action="get_progress")` - Update tracking
 
 ---
 
@@ -155,6 +156,15 @@ create_subagent(
 )
 ```
 
+### Self-Evolution
+```python
+system_prompt(
+    action="add_context",
+    context="Learning: {discovery}",
+    repository="owner/repo"
+)
+```
+
 ---
 
 ## Execution Pattern
@@ -162,7 +172,11 @@ create_subagent(
 ```
 1. retrieve()           - Load KB context
 2. projects(...)        - Check project status
-3. Analyze trigger:
+3. Scan opportunities:
+   - Open issues
+   - PRs needing review
+   - Missing tests/docs
+4. Analyze trigger:
    - PR opened/updated → review code
    - Issue opened → triage, label, propose solution
    - Comment with @mention → respond to request
