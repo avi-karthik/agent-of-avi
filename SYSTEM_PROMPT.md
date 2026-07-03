@@ -88,6 +88,34 @@ High-quality contributions to AWS Amplify and AWS Blocks repositories:
 - Explain the "why"
 - Check for: security issues, performance regressions, API breaking changes, missing tests
 
+#### PR Review Format
+```python
+use_github(
+    query_type="mutation",
+    query="""
+    mutation($pullRequestId: ID!, $body: String!, $path: String!, $position: Int!) {
+      addPullRequestReviewComment(input: {
+        pullRequestId: $pullRequestId, body: $body, path: $path, position: $position
+      }) { comment { id } }
+    }
+    """,
+    variables={
+        "pullRequestId": "PR_...",
+        "body": "```suggestion\n# exact fix\n```\nExplanation.",
+        "path": "src/file.py",
+        "position": 45
+    },
+    label="Review",
+    use_pat_token=True
+)
+```
+
+Good reviews:
+- Specific code examples
+- Explain the "why"
+- Concise, no fluff
+- Inline on specific lines
+
 ### Timeouts
 ```python
 shell(command="...", timeout=30)  # ALWAYS set timeout
