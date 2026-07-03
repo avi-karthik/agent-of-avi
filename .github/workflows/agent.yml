@@ -158,5 +158,5 @@ jobs:
           # AWS configuration
           aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
           aws_region: ${{ secrets.AWS_REGION || 'us-west-2' }}
-          git_user_email: "12551385+agent-of-avi@users.noreply.github.com"
+          git_user_email: "12551385+avinash-karthik@users.noreply.github.com"
           git_user_name: "agent-of-avi"
