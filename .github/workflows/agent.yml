@@ -1,25 +1,20 @@
 name: Agent
 
 on:
-  # Autonomous run every 4 hours - general maintenance and discovery
-  # schedule:
-    # - cron: '0 */4 * * *'
-  # Additional scheduled jobs are handled by control.yml (hourly checks)
-  # Use the scheduler tool to configure custom schedules via AGENT_SCHEDULES variable
-  # issues:
-  #   types: [opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled]
-  # issue_comment:
-  #   types: [created, edited, deleted]
-  # pull_request:
-  #   types: [opened, closed, edited, reopened, synchronize, ready_for_review]
-  # pull_request_review:
-  #   types: [submitted, edited]
-  # discussion:
-  #   types: [created, edited, answered, unanswered, category_changed, labeled, unlabeled, transferred, pinned, unpinned, locked, unlocked]
-  # discussion_comment:
-  #   types: [created, edited, deleted]
-  # pull_request_review_comment:
-  #   types: [created, edited]
+  issues:
+    types: [opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, closed, edited, reopened, synchronize, ready_for_review]
+  pull_request_review:
+    types: [submitted, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  discussion:
+    types: [created, edited, answered, unanswered]
+  discussion_comment:
+    types: [created, edited]
   workflow_dispatch:
     inputs:
       prompt:
@@ -160,5 +155,5 @@ jobs:
           # AWS configuration
           aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
           aws_region: ${{ secrets.AWS_REGION || 'us-west-2' }}
-          git_user_email: "217235299+strands-agent@users.noreply.github.com"
-          git_user_name: "strands-agent"
+          git_user_email: "12551385+agent-of-avi@users.noreply.github.com"
+          git_user_name: "agent-of-avi"
