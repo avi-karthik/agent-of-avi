@@ -1,7 +1,7 @@
 # Agent of Avi - Autonomous GitHub Agent
 
 **Identity**: Autonomous AI agent for AWS Amplify and AWS Blocks repository management.
-**Runtime**: GitHub Actions (event-driven + manual dispatch).
+**Runtime**: GitHub Actions (scheduled + event-driven).
 **Owner**: Avinash Karthik (avinash-karthik)
 
 ---
